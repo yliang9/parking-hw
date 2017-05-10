@@ -167,10 +167,6 @@ func getFeeForValue(inTime string, outTime time.Time, size int) int {
     return 20
 }
 
-func calcFee2(t *ticket) int {
-    return 10
-}
-
 func calcFee(lotType int) int {
     switch lotType {
     case Express:
@@ -179,6 +175,25 @@ func calcFee(lotType int) int {
         return 50
     default:
         return 10
+    }
+}
+
+func getDefaultSpace(lotType int, smallSize bool) (num int) {
+    switch lotType {
+    case Express:
+        return 50; //default 50 for either small or medium
+    case Daily:
+        if smallSize {
+            return 50
+        } else {
+            return 100
+        }
+    default:
+        if smallSize {
+            return 100
+        } else {
+            return 150
+        }
     }
 }
 

@@ -40,22 +40,9 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 func (a *App) initRoutes() {
     a.Router.HandleFunc("/parkinglot", a.parkinglotPostHandler).Methods("POST")
-    a.Router.HandleFunc("/parkinglot", a.getParkingLotByName).Methods("GET")
-    a.Router.HandleFunc("/checkin", a.checkIn).Methods("PUT")
+    a.Router.HandleFunc("/parkinglot", a.parkingLotGetHandler).Methods("GET")
+    a.Router.HandleFunc("/checkin", a.checkInHandler).Methods("PUT")
     a.Router.HandleFunc("/checkout", a.checkOutHandler).Methods("PUT")
-}
-
-//TODO move to factory
-func buildParkingLot(repo repository, lotType int, name string, addr string, small int, medium int) (parkingLot, error) {
-    return repo.buildParkingLot(lotType, name, addr, small, medium)
-}
-
-func getParkingLot(repo repository, name string) (parkingLot, error) {
-    return repo.getParkingLot(name)
-}
-
-func checkIn(repo repository, mycar * car, lot string) (ticket, error) {
-    return repo.checkIn(mycar, lot)
 }
 
 func (a *App) parkinglotPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -84,7 +71,7 @@ func (a *App) parkinglotPostHandler(w http.ResponseWriter, r *http.Request) {
     }
     defer r.Body.Close()
 
-    ret, err := buildParkingLot(repo, plType, name, addr, small, medium)
+    ret, err := repo.buildParkingLot(plType, name, addr, small, medium)
 
     fmt.Print(err)
     if err != nil {
@@ -95,11 +82,11 @@ func (a *App) parkinglotPostHandler(w http.ResponseWriter, r *http.Request) {
     respondWithJSON(w, http.StatusCreated, ret)
 }
 
-func (a *App) getParkingLotByName(w http.ResponseWriter, r *http.Request) {
+func (a *App) parkingLotGetHandler(w http.ResponseWriter, r *http.Request) {
     pName := r.FormValue("name");
 
     defer r.Body.Close()
-    p, err := getParkingLot(repo, pName)
+    p, err := repo.getParkingLot(pName)
     if err != nil {
         respondWithError(w, http.StatusInternalServerError, err.Error())
         return
@@ -107,7 +94,7 @@ func (a *App) getParkingLotByName(w http.ResponseWriter, r *http.Request) {
     respondWithJSON(w, http.StatusCreated, p)
 }
 
-func (a *App) checkIn(w http.ResponseWriter, r *http.Request) {
+func (a *App) checkInHandler(w http.ResponseWriter, r *http.Request) {
     lot := r.FormValue("lot")
     if (len(lot) <= 0) {
         respondWithError(w, http.StatusBadRequest, "Invalid input")
@@ -122,7 +109,7 @@ func (a *App) checkIn(w http.ResponseWriter, r *http.Request) {
     }
 
     defer r.Body.Close()
-    ret, err := checkIn(repo, &c, lot)
+    ret, err := repo.checkIn(&c, lot)
     if err != nil {
         respondWithError(w, http.StatusInternalServerError, err.Error())
         return

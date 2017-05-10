@@ -1,5 +1,7 @@
 package main
 
+//implementation of the map repository
+//use Singleton pattern and Mutex to provent concurrent write to the parking lot
 import (
     "sync"
     "fmt"
@@ -24,24 +26,6 @@ func GetMapRepoInstance() *mapRepo {
     return instance
 }
 
-func getDefaultSpace(lotType int, smallSize bool) (num int) {
-    switch lotType {
-    case Express:
-        return 50; //default 50 for either small or medium
-    case Daily:
-        if smallSize {
-            return 50
-        } else {
-            return 100
-        }
-    default:
-        if smallSize {
-            return 100
-        } else {
-            return 150
-        }
-    }
-}
 
 func (r *mapRepo) buildParkingLot(plType int, name string, addr string, small int, medium int) (parkingLot, error){
     //if empty, set default values
