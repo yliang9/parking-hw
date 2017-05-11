@@ -69,7 +69,7 @@ func (r *mapRepo) buildParkingLot(plType int, name string, addr string, small in
 func (r *mapRepo) getParkingLot(name string) (parkingLot, error){
     var lot parkingLot
     if len(name) <= 0 {
-        return lot, errors.New(fmt.Sprintf("Invalid input"))
+        return lot, errors.New("Invalid input")
     }
     r.mu.Lock()
     defer r.mu.Unlock()
@@ -104,16 +104,16 @@ func (r *mapRepo) checkIn(mycar *car, lotName string) (ticket, error) {
     }
     //check Size and Available Spots
     switch mycar.Size {
-    case 2:
-        return t, errors.New(fmt.Sprintf("Your car is too big to park here"))
-    case 1:
+    case LARGE:
+        return t, errors.New("Your car is too big to park here")
+    case MEDIUM:
         if lot.Cap.Medium == lot.Taken.Medium {
-            return t, errors.New(fmt.Sprintf("Lot Full"))
+            return t, errors.New("Lot Full")
         }
     default:
         //assume that small car can park in medium lot
         if lot.Cap.Small == lot.Taken.Small && lot.Cap.Medium == lot.Taken.Medium {
-            return t, errors.New(fmt.Sprintf("Lot Full"))
+            return t, errors.New("Lot Full")
         }
     }
 
@@ -121,24 +121,24 @@ func (r *mapRepo) checkIn(mycar *car, lotName string) (ticket, error) {
     defer r.mu.Unlock();
 
     //find the first Spot
-    if mycar.Size == 1 {
+    if mycar.Size == MEDIUM {
         for i, val := range lot.Spots.Medium {
             if !val {
                 lot.Spots.Medium[i] = true
                 t.Number = i
-                t.SpotType = 1
+                t.SpotType = MEDIUM
                 lot.Taken.Medium ++
                 break
             }
         }
-    } else if mycar.Size == 0 {
+    } else if mycar.Size == SMALL {
         //check if there is space for small
         if (lot.Taken.Small < lot.Cap.Small) {
             for i, val := range lot.Spots.Small {
                 if !val {
                     lot.Spots.Small[i] = true
                     t.Number = i
-                    t.SpotType = 0
+                    t.SpotType = SMALL
                     lot.Taken.Small ++
                     break
                 }
@@ -148,7 +148,7 @@ func (r *mapRepo) checkIn(mycar *car, lotName string) (ticket, error) {
                 if !val {
                     lot.Spots.Medium[i] = true
                     t.Number = i
-                    t.SpotType = 1
+                    t.SpotType = MEDIUM
                     lot.Taken.Medium ++
                     break
                 }
@@ -171,7 +171,7 @@ func (r *mapRepo) checkOut(t *ticket) (int, error) {
         //check how many days
         inTime, err :=time.Parse(time.RFC3339, t.CheckIn)
         if err != nil {
-            return 500, errors.New(fmt.Sprintf("Invalid ticket, charge 500"))
+            return 500, errors.New("Invalid ticket, charge 500")
         }
         Log.Println(inTime)
     }

@@ -1,0 +1,374 @@
+{
+  "swagger": "2.0",
+  "info": {},
+  "paths": {
+    "/checkin": {
+      "put": {
+        "description": "Car checkin",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "checkin",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Lot",
+            "description": "Parking Lot Name",
+            "name": "lot",
+            "in": "query",
+            "required": true
+          },
+          {
+            "x-go-name": "Car",
+            "description": "Car JSON",
+            "name": "car",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/car"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/ticketIn"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/checkout": {
+      "put": {
+        "description": "Car checkout",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "checkout",
+        "parameters": [
+          {
+            "x-go-name": "Body",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ticket"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/checkoutResponse"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/parkinglot": {
+      "get": {
+        "description": "Retrieve a parking lot information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "parkinglotGet",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Name",
+            "description": "Parking Lot Name",
+            "name": "name",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/parkinglotResponse"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      },
+      "post": {
+        "description": "Build a parking lot",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "parkinglotPost",
+        "parameters": [
+          {
+            "maximum": 2,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "PlType",
+            "description": "Parking Lot Type 0 -- Express; 1 -- Daily; 2 -- Value",
+            "name": "plType",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Name",
+            "description": "Parking Lot Name",
+            "name": "name",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Addr",
+            "description": "Parking Lot Address",
+            "name": "addr",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Small",
+            "description": "Max space for small car",
+            "name": "small",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Medium",
+            "description": "Max space for medium car",
+            "name": "medium",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/parkinglotResponse"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete a parking lot. Will fail if the parking lot is not empty.",
+        "operationId": "parkinglotDelete",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Name",
+            "description": "Parking Lot Name",
+            "name": "name",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/deleteResponse"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "capacity": {
+      "description": "capacity all parking spots for a parking lot",
+      "type": "object",
+      "properties": {
+        "medium": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Medium"
+        },
+        "small": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Small"
+        }
+      },
+      "x-go-package": "parking-hw"
+    },
+    "car": {
+      "description": "car",
+      "type": "object",
+      "properties": {
+        "plate": {
+          "type": "string",
+          "x-go-name": "Plate"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Size"
+        }
+      },
+      "x-go-package": "parking-hw"
+    },
+    "lotSpots": {
+      "description": "lotSpots parking lot spots status, false, true = empty, taken",
+      "type": "object",
+      "properties": {
+        "medium": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          },
+          "x-go-name": "Medium"
+        },
+        "small": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          },
+          "x-go-name": "Small"
+        }
+      },
+      "x-go-package": "parking-hw"
+    },
+    "parkingLot": {
+      "description": "parkingLot a parking lot",
+      "type": "object",
+      "properties": {
+        "Cap": {
+          "$ref": "#/definitions/capacity"
+        },
+        "Taken": {
+          "$ref": "#/definitions/capacity"
+        },
+        "addr": {
+          "description": "parking lot address",
+          "type": "string",
+          "x-go-name": "Addr"
+        },
+        "lotType": {
+          "description": "parking lot type, 0/1/2 EXPRESS/DAILY/VALUE",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "LotType"
+        },
+        "name": {
+          "description": "parking lot name",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "spots": {
+          "$ref": "#/definitions/lotSpots"
+        }
+      },
+      "x-go-package": "parking-hw"
+    },
+    "ticket": {
+      "description": "ticket",
+      "type": "object",
+      "properties": {
+        "in": {
+          "type": "string",
+          "x-go-name": "CheckIn"
+        },
+        "lotname": {
+          "type": "string",
+          "x-go-name": "LotName"
+        },
+        "number": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Number"
+        },
+        "plate": {
+          "type": "string",
+          "x-go-name": "Plate"
+        },
+        "spottype": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "SpotType"
+        }
+      },
+      "x-go-package": "parking-hw"
+    }
+  },
+  "responses": {
+    "checkoutResponse": {},
+    "deleteResponse": {},
+    "genericError": {
+      "description": "A GenericError is the default error message that is generated.\nFor certain status codes there are more appropriate error structures.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "x-go-name": "Code"
+          },
+          "message": {
+            "type": "string",
+            "x-go-name": "Message"
+          }
+        }
+      }
+    },
+    "parkinglot": {
+      "description": "parkingLot a parking lot",
+      "schema": {
+        "$ref": "#/definitions/lotSpots"
+      },
+      "headers": {
+        "Cap": {
+          "description": "total number of the parking spots"
+        },
+        "Taken": {
+          "description": "current taken number of the parking spots"
+        },
+        "addr": {
+          "type": "string",
+          "description": "parking lot address"
+        },
+        "lotType": {
+          "type": "integer",
+          "format": "int64",
+          "description": "parking lot type, 0/1/2 EXPRESS/DAILY/VALUE"
+        },
+        "name": {
+          "type": "string",
+          "description": "parking lot name"
+        },
+        "spots": {
+          "description": "current status of the parking spots"
+        }
+      }
+    },
+    "parkinglotResponse": {
+      "description": "Return a Parking Lot Object in Json",
+      "schema": {
+        "$ref": "#/definitions/parkingLot"
+      }
+    },
+    "ticketIn": {
+      "description": "Return a Parking ticket in Json",
+      "schema": {
+        "$ref": "#/definitions/ticket"
+      }
+    }
+  }
+}

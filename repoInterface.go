@@ -1,3 +1,4 @@
+//go:generate swagger generate spec
 package main
 
 //repository is the interface that defines all the basic parking lot methods

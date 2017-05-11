@@ -16,3 +16,9 @@
 2017/05/07 23:36:05 app.go:68: use default Express
 2017/05/09 21:43:33 app.go:65: use default Express
 2017/05/09 21:58:02 app.go:65: use default Express
+2017/05/10 21:42:40 app.go:30: listen tcp :8080: bind: address already in use
+2017/05/10 21:43:19 app.go:75: use default Express
+2017/05/10 21:43:28 app.go:75: use default Express
+2017/05/10 23:22:09 app.go:76: use default Express
+2017/05/10 23:26:40 app.go:76: use default Express
+2017/05/10 23:29:43 app.go:76: use default Express
