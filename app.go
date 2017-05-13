@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -220,7 +221,7 @@ func (a *App) checkOutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
-
-	fee := calcFee(0)
+	out := time.Now()
+	fee := calcFee(t, out)
 	respondWithJSON(w, http.StatusCreated, fee)
 }
