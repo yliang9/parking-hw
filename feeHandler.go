@@ -15,6 +15,7 @@ func calcFee(t ticket, out time.Time) int {
 	}
 }
 
+//check if two times are in the same day
 func sameDay(in time.Time, out time.Time) bool {
 	if in.Year() == out.Year() && in.Month() == out.Month() && in.Day() == out.Day() {
 		return true
@@ -22,6 +23,7 @@ func sameDay(in time.Time, out time.Time) bool {
 	return false
 }
 
+//get the hour different based on second for a duration
 func getDurationHour(d time.Duration) int {
 	h := int(d.Hours())
 	m := int(d.Minutes())
@@ -34,6 +36,7 @@ func getDurationHour(d time.Duration) int {
 	return h
 }
 
+//get the hours different between 2 times
 func getHoursForExpressOrDaily(inTime string, outTime time.Time) int {
 	in, err := time.Parse(time.RFC3339, inTime)
 	//if there is an error, it is our problem, Free parking
@@ -45,11 +48,13 @@ func getHoursForExpressOrDaily(inTime string, outTime time.Time) int {
 	return h
 }
 
+//get parking fee for express lot
 func getFeeForExpress(in string, out time.Time) int {
 	h := getHoursForExpressOrDaily(in, out)
 	return ExpressRate * h
 }
 
+//get parking fee for daily lot
 func getFeeForDaily(in string, out time.Time) int {
 	h := getHoursForExpressOrDaily(in, out)
 	d := h / 24
@@ -59,6 +64,7 @@ func getFeeForDaily(in string, out time.Time) int {
 	return d * DailyRate
 }
 
+//check if the day in t1 is before the day in t2
 func dayBefore(in time.Time, out time.Time) bool {
 	if in.Year() < out.Year() {
 		return true
@@ -73,6 +79,7 @@ func dayBefore(in time.Time, out time.Time) bool {
 	}
 }
 
+//get parking fee for value lot for case when checkout mulitple days after check in
 func getFeeForMultipleDays(in time.Time, out time.Time, size int) int {
 	//a days struct to store how many weekday, weekend passed during (in, out)  only
 	type dayCounter struct {
@@ -144,6 +151,7 @@ func getFeeForMultipleDays(in time.Time, out time.Time, size int) int {
 
 }
 
+//get parking fee for Value parking by hours
 func calcFee2ByHour(h int, sat bool, size int) int {
 	res := 0
 	if size == SMALL {
@@ -157,6 +165,7 @@ func calcFee2ByHour(h int, sat bool, size int) int {
 	return res
 }
 
+//get parking fee for value lot for same day parking
 func getFeeForSameDay(in time.Time, out time.Time, s int, size int) int {
 	//sunday?
 	if in.Weekday() == time.Sunday {
@@ -177,6 +186,7 @@ func getFeeForSameDay(in time.Time, out time.Time, s int, size int) int {
 	return calcFee2ByHour(h, in.Weekday() == time.Saturday, size)
 }
 
+//get parking fee for value lot
 func getFeeForValue(inTime string, outTime time.Time, size int) int {
 	in, err := time.Parse(time.RFC3339, inTime)
 	//if there is an error, it is our problem, Free parking

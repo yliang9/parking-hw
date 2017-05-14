@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//a map object to hold the parking lots
 type mapRepo struct {
 	parkingLots map[string]parkingLot
 	mu          sync.RWMutex
@@ -17,6 +18,7 @@ type mapRepo struct {
 var instance *mapRepo
 var once sync.Once
 
+//a singleton
 func GetMapRepoInstance() *mapRepo {
 	once.Do(func() {
 		instance = &mapRepo{
@@ -26,6 +28,7 @@ func GetMapRepoInstance() *mapRepo {
 	return instance
 }
 
+//implement repoInterface
 func (r *mapRepo) buildParkingLot(plType int, name string, addr string, small int, medium int) (parkingLot, error) {
 	//if empty, set default values
 	p := parkingLot{}
@@ -65,6 +68,7 @@ func (r *mapRepo) buildParkingLot(plType int, name string, addr string, small in
 	return p, nil
 }
 
+//implements repoInterface
 func (r *mapRepo) getParkingLot(name string) (parkingLot, error) {
 	var lot parkingLot
 	if len(name) <= 0 {
@@ -80,6 +84,7 @@ func (r *mapRepo) getParkingLot(name string) (parkingLot, error) {
 }
 
 //assume that we cannot delete a parking lot if not empty
+//implements repoInterface
 func (r *mapRepo) deleteParkingLot(name string) (bool, error) {
 	p, err := r.getParkingLot(name)
 	if err != nil {
@@ -94,6 +99,7 @@ func (r *mapRepo) deleteParkingLot(name string) (bool, error) {
 	return true, nil
 }
 
+//implements repoInterface
 func (r *mapRepo) checkIn(mycar *car, lotName string) (ticket, error) {
 	t := ticket{}
 	t.Plate = mycar.Plate
@@ -162,6 +168,7 @@ func (r *mapRepo) checkIn(mycar *car, lotName string) (ticket, error) {
 	return t, nil
 }
 
+//implements repoInterface
 func (r *mapRepo) checkOut(t *ticket) (int, error) {
 	lot, err := r.getParkingLot(t.LotName)
 	if err != nil {
