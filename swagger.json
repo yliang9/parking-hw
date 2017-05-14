@@ -54,6 +54,7 @@
         "parameters": [
           {
             "x-go-name": "Body",
+            "description": "Parking ticket JSON",
             "name": "body",
             "in": "body",
             "schema": {
@@ -115,9 +116,9 @@
             "minimum": 0,
             "type": "integer",
             "format": "int64",
-            "x-go-name": "PlType",
+            "x-go-name": "Type",
             "description": "Parking Lot Type 0 -- Express; 1 -- Daily; 2 -- Value",
-            "name": "plType",
+            "name": "type",
             "in": "query"
           },
           {
@@ -283,23 +284,34 @@
       "type": "object",
       "properties": {
         "in": {
+          "description": "time format at time.RFC3339",
           "type": "string",
           "x-go-name": "CheckIn"
         },
         "lotname": {
+          "description": "parking lot name",
           "type": "string",
           "x-go-name": "LotName"
         },
+        "lottype": {
+          "description": "parking lot type 0 -- express, 1 -- daily, 2 -- value",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "LotType"
+        },
         "number": {
+          "description": "parking spot number",
           "type": "integer",
           "format": "int64",
           "x-go-name": "Number"
         },
         "plate": {
+          "description": "car license plate number",
           "type": "string",
           "x-go-name": "Plate"
         },
         "spottype": {
+          "description": "parking spot type 0 -- small, 1 -- medium",
           "type": "integer",
           "format": "int64",
           "x-go-name": "SpotType"
