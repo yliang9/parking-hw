@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "time"
 
 //calculate the parking fee based on the ticket
 func calcFee(t ticket, out time.Time) int {
@@ -96,17 +93,14 @@ func getFeeForMultipleDays(in time.Time, out time.Time, size int) int {
 			days.wd++
 		}
 	}
-	fmt.Println(days)
+	//fmt.Println(days)
 	//go back one day
 	in2 = in2.Add(-time.Hour * time.Duration(24))
-	fmt.Println(in2)
 	//there is one special case that we may over charge the user
 	//although they are in 2 separate days, but in and out are both work day, and duration <= 5 hours.
 	//in this case, the combinaton of 2 separate hours may > 5, user will get mad :(
 	dur2 := out.Sub(in2)
 	s2 := int(dur2.Seconds())
-	fmt.Println("s2")
-	fmt.Println(s2)
 	if s2 <= 5*60*60 && in.Weekday() < 6 && in.Weekday() > 0 && out.Weekday() < 6 && out.Weekday() > 0 {
 		rh := s2 / (60 * 60)
 		if s2%(60*60) > 0 {
@@ -130,49 +124,18 @@ func getFeeForMultipleDays(in time.Time, out time.Time, size int) int {
 	if h2 > 5 {
 		h2 = 5
 	}
-	fmt.Println(h1)
-	fmt.Println(h2)
 	//get fee
 	var fee1, fee2 int
 	if in.Weekday() == time.Sunday {
 		fee1 = 0
 	} else {
-		if in.Weekday() == time.Saturday {
-			if size == SMALL {
-				fee1 = h1 * VS / 2
-			} else {
-				fee1 = h1 * VM / 2
-			}
-		} else {
-			if size == SMALL {
-				fee1 = h1 * VS
-			} else {
-				fee1 = h1 * VM
-			}
-		}
+		fee1 = calcFee2ByHour(h1, in.Weekday() == time.Saturday, size)
 	}
-	fmt.Println(in.Weekday())
-	fmt.Println(out.Weekday())
 	if out.Weekday() == time.Sunday {
 		fee2 = 0
 	} else {
-		if out.Weekday() == time.Saturday {
-			if size == SMALL {
-				fee2 = h2 * VS / 2
-			} else {
-				fee2 = h2 * VM / 2
-			}
-		} else {
-			if size == SMALL {
-				fee2 = h2 * VS
-			} else {
-				fee2 = h2 * VM
-			}
-		}
+		fee2 = calcFee2ByHour(h2, out.Weekday() == time.Saturday, size)
 	}
-	//get total
-	fmt.Println(fee1)
-	fmt.Println(fee2)
 	if size == SMALL {
 		return fee1 + fee2 + days.wd*5*VS + days.sat*5*VS/2
 	} else {
@@ -210,11 +173,8 @@ func getFeeForSameDay(in time.Time, out time.Time, s int, size int) int {
 			h++
 		}
 	}
-	sat := false
-	if in.Weekday() == time.Saturday {
-		sat = true
-	}
-	return calcFee2ByHour(h, sat, size)
+
+	return calcFee2ByHour(h, in.Weekday() == time.Saturday, size)
 }
 
 func getFeeForValue(inTime string, outTime time.Time, size int) int {

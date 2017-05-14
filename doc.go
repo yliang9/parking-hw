@@ -7,7 +7,7 @@ type ParkingLotPostParam struct {
 	// in: query
 	// minimum: 0
 	// maximum: 2
-	PlType int `json:"plType"`
+	Type int `json:"type"`
 	// Parking Lot Name
 	// in: query
 	// required: true

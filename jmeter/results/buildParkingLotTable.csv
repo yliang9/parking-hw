@@ -1,0 +1,42 @@
+1494728831204,2,Express1,201,Created,Build Parking Lot 1-1,text,true,833,1,1,2
+1494728831270,0,Express2,201,Created,Build Parking Lot 1-1,text,true,818,1,1,0
+1494728831272,0,Daily1,201,Created,Build Parking Lot 1-1,text,true,1133,1,1,0
+1494728831272,1,Daily2,201,Created,Build Parking Lot 1-1,text,true,1133,1,1,1
+1494728831273,0,Value1,201,Created,Build Parking Lot 1-1,text,true,1734,1,1,0
+1494728831274,0,Value2,201,Created,Build Parking Lot 1-1,text,true,1734,1,1,0
+1494728831274,1,Value3,201,Created,Build Parking Lot 1-1,text,true,1734,1,1,1
+1494728831275,0,Express1,400,Bad Request,Build Parking Lot 1-1,text,false,158,1,1,0
+1494728831275,1,Express2,400,Bad Request,Build Parking Lot 1-1,text,false,158,1,1,1
+1494728831276,0,Daily1,400,Bad Request,Build Parking Lot 1-1,text,false,156,1,1,0
+1494728831276,0,Daily2,400,Bad Request,Build Parking Lot 1-1,text,false,156,1,1,0
+1494728831276,1,Value1,400,Bad Request,Build Parking Lot 1-1,text,false,156,1,1,1
+1494728831277,0,Value2,400,Bad Request,Build Parking Lot 1-1,text,false,156,1,1,0
+1494728831277,0,Value3,400,Bad Request,Build Parking Lot 1-1,text,false,156,1,1,0
+1494729134540,1,Express1,201,Created,Build Parking Lot 1-1,text,true,833,1,1,1
+1494729134622,0,Express2,201,Created,Build Parking Lot 1-1,text,true,818,1,1,0
+1494729134623,0,Daily1,201,Created,Build Parking Lot 1-1,text,true,1133,1,1,0
+1494729134623,0,Daily2,201,Created,Build Parking Lot 1-1,text,true,1133,1,1,0
+1494729134624,0,Value1,201,Created,Build Parking Lot 1-1,text,true,1734,1,1,0
+1494729134624,1,Value2,201,Created,Build Parking Lot 1-1,text,true,1734,1,1,1
+1494729134625,0,Value3,201,Created,Build Parking Lot 1-1,text,true,1734,1,1,0
+1494729135044,1,Express1,400,Bad Request,Build Parking Lot 1-2,text,false,158,1,1,1
+1494729135050,0,Express2,400,Bad Request,Build Parking Lot 1-2,text,false,158,1,1,0
+1494729135050,1,Daily1,400,Bad Request,Build Parking Lot 1-2,text,false,156,1,1,1
+1494729135051,0,Daily2,400,Bad Request,Build Parking Lot 1-2,text,false,156,1,1,0
+1494729135051,1,Value1,400,Bad Request,Build Parking Lot 1-2,text,false,156,1,1,1
+1494729135052,0,Value2,400,Bad Request,Build Parking Lot 1-2,text,false,156,1,1,0
+1494729135052,1,Value3,400,Bad Request,Build Parking Lot 1-2,text,false,156,1,1,1
+1494729590969,2,Express1,400,Bad Request,Build Parking Lot 1-1,text,false,158,2,2,2
+1494729590969,2,Express1,201,Created,Build Parking Lot 1-2,text,true,833,2,2,2
+1494729591024,1,Express2,201,Created,Build Parking Lot 1-1,text,true,818,2,2,1
+1494729591025,0,Express2,400,Bad Request,Build Parking Lot 1-2,text,false,158,2,2,0
+1494729591052,0,Daily1,201,Created,Build Parking Lot 1-1,text,true,1133,2,2,0
+1494729591052,0,Daily1,400,Bad Request,Build Parking Lot 1-2,text,false,156,2,2,0
+1494729591074,1,Daily2,201,Created,Build Parking Lot 1-1,text,true,1133,2,2,1
+1494729591074,1,Daily2,400,Bad Request,Build Parking Lot 1-2,text,false,156,2,2,1
+1494729591100,0,Value1,201,Created,Build Parking Lot 1-1,text,true,1734,2,2,0
+1494729591110,0,Value1,400,Bad Request,Build Parking Lot 1-2,text,false,156,2,2,0
+1494729591122,0,Value2,201,Created,Build Parking Lot 1-1,text,true,1734,2,2,0
+1494729591149,1,Value2,400,Bad Request,Build Parking Lot 1-2,text,false,156,2,2,1
+1494729591149,1,Value3,201,Created,Build Parking Lot 1-1,text,true,1734,2,2,1
+1494729591170,0,Value3,400,Bad Request,Build Parking Lot 1-2,text,false,156,2,2,0

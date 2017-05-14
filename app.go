@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -72,7 +71,7 @@ func (a *App) initRoutes() {
 //
 func (a *App) parkinglotPostHandler(w http.ResponseWriter, r *http.Request) {
 	//    var plType, small, medium int
-	plType, err := strconv.Atoi(r.FormValue("lotType")[:0])
+	plType, err := strconv.Atoi(r.FormValue("type"))
 	if err != nil {
 		Log.Println("use default Express")
 		plType = 0 //default Express type
@@ -221,7 +220,11 @@ func (a *App) checkOutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
-	out := time.Now()
-	fee := calcFee(t, out)
+	fee, err := repo.checkOut(&t)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		respondWithError(w, http.StatusBadRequest, "Invalid Ticket")
+		return
+	}
 	respondWithJSON(w, http.StatusCreated, fee)
 }

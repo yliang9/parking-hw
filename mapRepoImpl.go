@@ -167,13 +167,21 @@ func (r *mapRepo) checkOut(t *ticket) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	if lot.LotType == Daily {
-		//check how many days
-		inTime, err := time.Parse(time.RFC3339, t.CheckIn)
-		if err != nil {
-			return 500, errors.New("Invalid ticket, charge 500")
+	out := time.Now()
+	//clear parking spot
+	if t.SpotType == SMALL {
+		if lot.Taken.Small == 0 {
+			return 0, errors.New("lot is alreay empty, invalid ticket")
 		}
-		Log.Println(inTime)
+		lot.Taken.Small--
+		lot.Spots.Small[t.Number] = false
+	} else {
+		if lot.Taken.Medium == 0 {
+			return 0, errors.New("lot is alreay empty, invalid ticket")
+		}
+		lot.Taken.Medium--
+		lot.Spots.Medium[t.Number] = false
 	}
-	return 0, nil
+	fee := calcFee(*t, out)
+	return fee, nil
 }
